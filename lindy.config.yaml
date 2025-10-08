@@ -1,0 +1,22 @@
+robots:
+  - name: booster-t1
+    host: 192.168.10.102
+    port: 22
+    user: booster
+    password: "123456"
+environments:
+  - name: prod
+    robots:
+      - booster-t1
+deployment:
+  source: ./object-react/src
+  destination: /home/booster/object-react/src
+  buildCommand: cd ~/object-react && source /opt/ros/humble/setup.bash && colcon build
+    --symlink-install
+  restartCommand: bash -c 'killall hello_node; sleep 1; .
+    ~/object-react/install/setup.bash; nohup ros2 run hello_robot hello_node
+    </dev/null >/tmp/hello_node.log 2>&1 &'
+  exclude:
+    - "*.pyc"
+    - __pycache__
+    - "*.log"
